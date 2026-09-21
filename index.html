@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en-NZ">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buggy 1000 Countdown</title>
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #111;
+    color: #fff;
+    text-align: center;
+  }
+
+  .wrap {
+    padding: 24px 14px;
+  }
+
+  h1 {
+    margin: 0 0 20px;
+    font-size: clamp(24px, 6vw, 38px);
+    line-height: 1.1;
+    font-weight: 900;
+  }
+
+  .countdown {
+    display: flex;
+    justify-content: center;
+    gap: clamp(8px, 2.5vw, 20px);
+  }
+
+  .unit {
+    min-width: 58px;
+  }
+
+  .number {
+    font-size: clamp(30px, 8vw, 54px);
+    line-height: 1;
+    font-weight: 900;
+  }
+
+  .label {
+    margin-top: 5px;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    opacity: .75;
+  }
+
+  #done {
+    display: none;
+    font-size: clamp(25px, 7vw, 42px);
+    font-weight: 900;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>🏁 COUNTDOWN TO RACE DAY 🏁</h1>
+
+    <div id="countdown" class="countdown">
+      <div class="unit"><div id="days" class="number">00</div><div class="label">Days</div></div>
+      <div class="unit"><div id="hours" class="number">00</div><div class="label">Hours</div></div>
+      <div class="unit"><div id="minutes" class="number">00</div><div class="label">Minutes</div></div>
+      <div class="unit"><div id="seconds" class="number">00</div><div class="label">Seconds</div></div>
+    </div>
+
+    <div id="done">🏁 IT'S RACE DAY! 🏁</div>
+  </div>
+
+<script>
+  // Countdown target: 6:00am NZ time, Friday 9 October 2026.
+  const target = new Date('2026-10-09T06:00:00+13:00').getTime();
+
+  function update() {
+    const distance = target - Date.now();
+
+    if (distance <= 0) {
+      document.getElementById('countdown').style.display = 'none';
+      document.getElementById('done').style.display = 'block';
+      return;
+    }
+
+    document.getElementById('days').textContent =
+      String(Math.floor(distance / 86400000)).padStart(2, '0');
+
+    document.getElementById('hours').textContent =
+      String(Math.floor((distance % 86400000) / 3600000)).padStart(2, '0');
+
+    document.getElementById('minutes').textContent =
+      String(Math.floor((distance % 3600000) / 60000)).padStart(2, '0');
+
+    document.getElementById('seconds').textContent =
+      String(Math.floor((distance % 60000) / 1000)).padStart(2, '0');
+  }
+
+  update();
+  setInterval(update, 1000);
+</script>
+</body>
+</html>
